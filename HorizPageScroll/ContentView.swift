@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var full: Bool = false
+    @State var full: Bool = true
     let count: Int = 10
     let scale: CGFloat = 0.75
     let scaleMargin: CGFloat = 0.25
@@ -27,11 +27,14 @@ struct ContentView: View {
     var body: some View {
         VStack {
             if full {
-                TabView {
+                TabView(selection: $currentIndex) {
                     ForEach(0..<count, id: \.self) { index in
                         VStack {
                             Text("Page \(index)")
                                 .backgroundStyle(.blue)
+                                .onTapGesture {
+                                    full = false
+                                }
                         }
                     }
                 }
@@ -49,6 +52,9 @@ struct ContentView: View {
                                             VStack {
                                                 Text("Page \(index)")
                                                     .backgroundStyle(.blue)
+                                                    .onTapGesture {
+                                                        full = true
+                                                    }
                                             }
                                             .frame(width: gproxy.size.width,
                                                    height: gproxy.size.height
@@ -78,14 +84,21 @@ struct ContentView: View {
                             .background()
                             .backgroundStyle(.blue)
                             .padding([.leading, .trailing], gproxy.size.width * scaleMargin / 2)
+                            .onAppear {
+                                sliderDragging = true
+                                sproxy.scrollTo(currentIndex, anchor: .center)
+                                DispatchQueue.main.async {
+                                    sliderDragging = false
+                                }
+                            }
+                            
                             Spacer()
                             
                             GeometryReader { proxy in
                                 horizontalSlider(proxy: proxy, sproxy: sproxy)
                             }
+                            .padding()
                         }
-                        .background()
-                        .backgroundStyle(.yellow)
                     }
                 }
             }
