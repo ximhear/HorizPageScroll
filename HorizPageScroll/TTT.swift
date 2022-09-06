@@ -9,7 +9,30 @@ import SwiftUI
 
 struct TTT: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            TabView {
+                VStack {
+                    Text("1")
+                }
+                .badge(2)
+                .tabItem {
+                    Label("Received", systemImage: "tray.and.arrow.down.fill")
+                }
+                VStack {
+                    Text("2")
+                }
+                .tabItem {
+                    Label("Sent", systemImage: "tray.and.arrow.up.fill")
+                }
+                VStack {
+                    Text("3")
+                }
+                .badge("!")
+                .tabItem {
+                    Label("Account", systemImage: "person.crop.circle.fill")
+                }
+            }
+        }
     }
 }
 
