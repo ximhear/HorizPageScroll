@@ -142,12 +142,11 @@ struct ContentView: View {
                 pageOffset = offset
                 
                 let v = offset
-                let pageWidth = readerProxy.size.width * 0.75
-                let value = v - readerProxy.size.width * 0.75 / 2.0
-                var start = readerProxy.size.width * 0.25 / 2.0 + 20
+                let pageWidth = readerProxy.size.width * scale
+                let value = v - readerProxy.size.width * scale / 2.0
+                var start: CGFloat = 20
                 var minIndex: Int = 0
                 var minDistance: CGFloat = 100000
-                start = readerProxy.size.width * 0.25 / 2.0 + 20
                 for x in 0..<count {
                     start -= 20
                     let end = start - pageWidth
