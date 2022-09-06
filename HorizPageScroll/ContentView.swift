@@ -12,6 +12,13 @@ struct ContentView: View {
     let count: Int = 10
     let scale: CGFloat = 0.75
     let scaleMargin: CGFloat = 0.25
+    let thumbSize: CGSize = .init(width: 80, height: 40)
+    @State var offsetX: CGFloat = 0
+    @State var draggingOffsetX: CGFloat = 0
+    @State var sliderDragging: Bool = false
+    @State var currentIndex: Int = 0
+    @State var sliderChanged: Int = 0
+    
     var body: some View {
         VStack {
             if full {
@@ -60,6 +67,24 @@ struct ContentView: View {
                                 .backgroundStyle(.blue)
                                 .padding([.leading, .trailing], gproxy.size.width * scaleMargin / 2)
                                 Spacer()
+                            
+                            GHorizontalSlider(maxValue: count - 1,
+                                              offsetX: $offsetX,
+                                              draggingOffsetX: $draggingOffsetX,
+                                              sliderDragging: $sliderDragging,
+                                              currentIndex: $currentIndex,
+                                              sliderChanged: $sliderChanged,
+                                              thumbSize: thumbSize) {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color.red)
+                                    .opacity(0.5)
+                            }
+                                              .onChange(of: currentIndex) { newValue in
+                                                  
+                                                  withAnimation { //(.easeInOut(duration: 0.15)) {
+                                                      sproxy.scrollTo(newValue, anchor: .center)
+                                                  }
+                                              }
                         }
                         .background()
                         .backgroundStyle(.yellow)
