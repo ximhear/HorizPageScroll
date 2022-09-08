@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TogglePagingView: View {
-    @State var full: Bool = false
+    @State var full: Bool = true
     let count: Int = 10
     let scale: CGFloat = 0.75
     let scaleMargin: CGFloat = 0.25
@@ -31,10 +31,14 @@ struct TogglePagingView: View {
                     ForEach(0..<count, id: \.self) { index in
                         VStack {
                             Text("Page \(index)")
+                            Spacer()
+                            Text("Page \(index)")
                                 .backgroundStyle(.blue)
                                 .onTapGesture {
                                     full = false
                                 }
+                            Spacer()
+                            Text("Page \(index)")
                         }
                     }
                 }
@@ -121,6 +125,7 @@ struct TogglePagingView: View {
                         }
                         .onTapGesture {
                             GZLogFunc()
+                            currentIndex = index
                             full = true
                         }
                     }
