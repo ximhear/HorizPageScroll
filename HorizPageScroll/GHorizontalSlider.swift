@@ -35,71 +35,76 @@ struct GHorizontalSlider<Content: View>: View {
     
     var body: some View {
         
-        GeometryReader { reader in
-            ZStack {
-                RoundedRectangle(cornerRadius: 5)
-                    .fill(Color.accentColor)
-                    .frame(width: reader.size.width - thumbSize.width, height: barHeight)
-                HStack() {
-                    thumbView
-                        .frame(width: thumbSize.width, height: thumbSize.height)
-                        .offset(x: draggingOffsetX, y: 0)
-                        .gesture(
-                            DragGesture()
-                                .onChanged { gesture in
-                                    sliderDragging = true
-                                    draggingOffsetX = offsetX + gesture.translation.width
+        HStack {
+            GeometryReader { reader in
+                ZStack {
+                    RoundedRectangle(cornerRadius: 5)
+                        .fill(Color.accentColor)
+                        .frame(width: reader.size.width - thumbSize.width, height: barHeight)
+                    HStack() {
+                        thumbView
+                            .frame(width: thumbSize.width, height: thumbSize.height)
+                            .offset(x: draggingOffsetX, y: 0)
+                            .gesture(
+                                DragGesture()
+                                    .onChanged { gesture in
+                                        sliderDragging = true
+                                        draggingOffsetX = offsetX + gesture.translation.width
 
-                                    let m = (reader.size.width - thumbSize.width)
-                                    let old = currentIndex
-                                    if draggingOffsetX < 0 {
-                                        draggingOffsetX = 0
+                                        let m = (reader.size.width - thumbSize.width)
+                                        let old = currentIndex
+                                        if draggingOffsetX < 0 {
+                                            draggingOffsetX = 0
+                                        }
+                                        else if draggingOffsetX > m {
+                                            draggingOffsetX = m
+                                        }
+                                        currentIndex = Int(round(draggingOffsetX * CGFloat(maxValue) / m))
+                                        draggingOffsetX = m / CGFloat(maxValue) * CGFloat(currentIndex)
+                                        if old != currentIndex {
+                                            sliderChanged &+= 1
+                                        }
                                     }
-                                    else if draggingOffsetX > m {
-                                        draggingOffsetX = m
+                                
+                                    .onEnded { gesture in
+                                        let old = currentIndex
+                                        draggingOffsetX = offsetX + gesture.translation.width
+                                        let m = (reader.size.width - thumbSize.width)
+                                        if draggingOffsetX < 0 {
+                                            draggingOffsetX = 0
+                                        }
+                                        else if draggingOffsetX > m {
+                                            draggingOffsetX = m
+                                        }
+                                        currentIndex = Int(round(draggingOffsetX * CGFloat(maxValue) / m))
+                                        draggingOffsetX = m / CGFloat(maxValue) * CGFloat(currentIndex)
+                                        GZLogFunc(currentIndex)
+                                        GZLogFunc(draggingOffsetX)
+                                        offsetX = draggingOffsetX
+                                        if old != currentIndex {
+                                            sliderChanged &+= 1
+                                        }
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                                            sliderDragging = false
+                                        })
                                     }
-                                    currentIndex = Int(round(draggingOffsetX * CGFloat(maxValue) / m))
-                                    draggingOffsetX = m / CGFloat(maxValue) * CGFloat(currentIndex)
-                                    if old != currentIndex {
-                                        sliderChanged &+= 1
-                                    }
-                                }
-                            
-                                .onEnded { gesture in
-                                    let old = currentIndex
-                                    draggingOffsetX = offsetX + gesture.translation.width
-                                    let m = (reader.size.width - thumbSize.width)
-                                    if draggingOffsetX < 0 {
-                                        draggingOffsetX = 0
-                                    }
-                                    else if draggingOffsetX > m {
-                                        draggingOffsetX = m
-                                    }
-                                    currentIndex = Int(round(draggingOffsetX * CGFloat(maxValue) / m))
-                                    draggingOffsetX = m / CGFloat(maxValue) * CGFloat(currentIndex)
-                                    GZLogFunc(currentIndex)
-                                    GZLogFunc(draggingOffsetX)
-                                    offsetX = draggingOffsetX
-                                    if old != currentIndex {
-                                        sliderChanged &+= 1
-                                    }
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                                        sliderDragging = false
-                                    })
-                                }
-                        )
-                    Spacer()
+                            )
+                        Spacer()
+                    }
+                    .frame(width: reader.size.width)
                 }
+                .onAppear(perform: {
+                    draggingOffsetX = (reader.size.width - thumbSize.width) / CGFloat(maxValue) * CGFloat(currentIndex)
+                    offsetX = draggingOffsetX
+                    GZLogFunc(reader.size.width)
+                    GZLogFunc(currentIndex)
+                })
                 .frame(width: reader.size.width)
             }
-            .onAppear(perform: {
-                draggingOffsetX = (reader.size.width - thumbSize.width) / CGFloat(maxValue) * CGFloat(currentIndex)
-                offsetX = draggingOffsetX
-                GZLogFunc(reader.size.width)
-                GZLogFunc(currentIndex)
-            })
-            .frame(width: reader.size.width, height: max(barHeight, thumbSize.height))
         }
+        .frame(height: max(barHeight, thumbSize.height))
+        .background()
+        .backgroundStyle(.blue.opacity(0.1))
     }
 }
 

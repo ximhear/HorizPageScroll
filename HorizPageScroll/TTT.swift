@@ -10,28 +10,22 @@ import SwiftUI
 struct TTT: View {
     var body: some View {
         VStack {
-            TabView {
-                VStack {
-                    Text("1")
+            Text("1")
+            GeometryReader { gproxy in
+                VStack(alignment: .center) {
+                    Spacer()
+                    Text("Hello")
+                    Spacer()
+                    Text("Hello")
+                    Spacer()
+                    Text("Hello")
+                    Spacer()
                 }
-                .badge(2)
-                .tabItem {
-                    Label("Received", systemImage: "tray.and.arrow.down.fill")
-                }
-                VStack {
-                    Text("2")
-                }
-                .tabItem {
-                    Label("Sent", systemImage: "tray.and.arrow.up.fill")
-                }
-                VStack {
-                    Text("3")
-                }
-                .badge("!")
-                .tabItem {
-                    Label("Account", systemImage: "person.crop.circle.fill")
-                }
+                .frame(width: gproxy.size.width, height: gproxy.size.height)
+                .background()
+                .backgroundStyle(.red)
             }
+            Text("1")
         }
     }
 }

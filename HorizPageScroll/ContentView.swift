@@ -9,7 +9,20 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            HStack {
+                Text("Title")
+            }
+            VStack {
+                TogglePagingView()
+                    .background()
+                .backgroundStyle(.blue.opacity(0.3))
+            }
+            .padding()
+            HStack {
+               Text("Bottom")
+            }
+        }
     }
 }
 

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TogglePagingView: View {
-    @State var full: Bool = true
+    @State var full: Bool = false
     let count: Int = 10
     let scale: CGFloat = 0.75
     let scaleMargin: CGFloat = 0.25
@@ -44,82 +44,28 @@ struct TogglePagingView: View {
                 ScrollViewReader { sproxy in
                     GeometryReader { gproxy in
                         VStack {
-                            Spacer()
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                ZStack {
-                                    GeometryReader { proxy in
-                                        let offset = proxy.frame(in: .named("scroll")).minX
-                                        aaaa(offset: offset, readerProxy: gproxy)
-                                    }
-                                    LazyHStack(alignment: .top, spacing: 20) {
-                                        ForEach(0..<count, id: \.self) { index in
-                                            Group {
-                                                VStack {
-                                                    Text("Page \(index)")
-                                                        .backgroundStyle(.blue)
-                                                }
-                                                .allowsHitTesting(false)
-                                                .frame(width: gproxy.size.width,
-                                                       height: gproxy.size.height
-                                                )
-                                                .scaleEffect(scale)
-                                                .frame(width: gproxy.size.width * scale,
-                                                       height: gproxy.size.height * scale
-                                                )
-                                                .background()
-                                                .backgroundStyle(.green)
-                                                .padding([.leading], index == 0 ? gproxy.size.width * scaleMargin / 2 : 0)
-                                                .padding([.trailing], index == count - 1 ? gproxy.size.width * scaleMargin / 2 : 0)
-                                            }
-                                            .onTapGesture {
-                                                GZLogFunc()
-                                                full = true
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            .coordinateSpace(name: "scroll")
-                            .padding([.leading, .trailing], -gproxy.size.width * scaleMargin / 2)
-                            .frame(
-                                width: gproxy.size.width * scale,
-                                height: gproxy.size.height * scale
-                            )
+//                            Spacer()
+                            scrollContainer(sproxy: sproxy, gproxy: gproxy)
+                                .background()
+                                .backgroundStyle(.cyan)
+//                            GeometryReader { proxy in
+                            horizontalSlider(width: gproxy.size.width - 16 * 2, sproxy: sproxy)
+//                            }
+                            .padding([.leading, .trailing], 16)
                             .background()
-                            .backgroundStyle(.blue)
-                            .padding([.leading, .trailing], gproxy.size.width * scaleMargin / 2)
-                            .onAppear {
-                                sliderDragging = true
-                                if currentIndex == 0 {
-                                    sproxy.scrollTo(currentIndex, anchor: .leading)
-                                }
-                                else if currentIndex == count - 1 {
-                                    sproxy.scrollTo(currentIndex, anchor: .trailing)
-                                }
-                                else {
-                                    sproxy.scrollTo(currentIndex, anchor: .center)
-                                }
-                                DispatchQueue.main.async {
-                                    sliderDragging = false
-                                }
-                            }
-                            
-                            Spacer()
-                            
-                            GeometryReader { proxy in
-                                horizontalSlider(proxy: proxy, sproxy: sproxy)
-                            }
-                            .padding()
+                            .backgroundStyle(.yellow)
+//                            Spacer()
                         }
+                        .frame(width: gproxy.size.width, height: gproxy.size.height)
                     }
                 }
             }
         }
     }
     
-    func horizontalSlider(proxy: GeometryProxy, sproxy: ScrollViewProxy) -> some View {
+    func horizontalSlider(width: CGFloat, sproxy: ScrollViewProxy) -> some View {
         DispatchQueue.main.async {
-            sliderWidth = proxy.size.width
+            sliderWidth = width
         }
         return GHorizontalSlider(maxValue: count - 1,
                           offsetX: $offsetX,
@@ -137,6 +83,67 @@ struct TogglePagingView: View {
                         sproxy.scrollTo(currentIndex, anchor: .center)
                     }
                 }
+        }
+    }
+    
+    func scrollContainer(sproxy: ScrollViewProxy, gproxy: GeometryProxy) -> some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            ZStack {
+                GeometryReader { proxy in
+                    let offset = proxy.frame(in: .named("scroll")).minX
+                    aaaa(offset: offset, readerProxy: gproxy)
+                }
+                LazyHStack(alignment: .top, spacing: 20) {
+                    ForEach(0..<count, id: \.self) { index in
+                        Group {
+                            VStack {
+                                Text("Page \(index)")
+                                    .backgroundStyle(.blue)
+                            }
+                            .allowsHitTesting(false)
+                            .frame(width: gproxy.size.width,
+                                   height: gproxy.size.height
+                            )
+                            .scaleEffect(scale)
+                            .frame(width: gproxy.size.width * scale,
+                                   height: gproxy.size.height * scale
+                            )
+                            .background()
+                            .backgroundStyle(.green)
+                            .padding([.leading], index == 0 ? gproxy.size.width * scaleMargin / 2 : 0)
+                            .padding([.trailing], index == count - 1 ? gproxy.size.width * scaleMargin / 2 : 0)
+                        }
+                        .onTapGesture {
+                            GZLogFunc()
+                            full = true
+                        }
+                    }
+                }
+            }
+        }
+        .coordinateSpace(name: "scroll")
+        .padding([.leading, .trailing], -gproxy.size.width * scaleMargin / 2)
+        .frame(
+            width: gproxy.size.width * scale,
+            height: gproxy.size.height * scale
+        )
+        .background()
+        .backgroundStyle(.blue)
+        .padding([.leading, .trailing], gproxy.size.width * scaleMargin / 2)
+        .onAppear {
+            sliderDragging = true
+            if currentIndex == 0 {
+                sproxy.scrollTo(currentIndex, anchor: .leading)
+            }
+            else if currentIndex == count - 1 {
+                sproxy.scrollTo(currentIndex, anchor: .trailing)
+            }
+            else {
+                sproxy.scrollTo(currentIndex, anchor: .center)
+            }
+            DispatchQueue.main.async {
+                sliderDragging = false
+            }
         }
     }
     
