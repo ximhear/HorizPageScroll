@@ -99,6 +99,12 @@ struct TogglePagingView: View {
                             VStack {
                                 Text("Page \(index)")
                                     .backgroundStyle(.blue)
+                                Spacer()
+                                Text("Page \(index)")
+                                    .backgroundStyle(.blue)
+                                Spacer()
+                                Text("Page \(index)")
+                                    .backgroundStyle(.blue)
                             }
                             .allowsHitTesting(false)
                             .frame(width: gproxy.size.width,
