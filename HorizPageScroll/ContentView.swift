@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var full: Bool = true
+    @State var full: Bool = false
     let count: Int = 10
     let scale: CGFloat = 0.75
     let scaleMargin: CGFloat = 0.25
@@ -47,31 +47,35 @@ struct ContentView: View {
                             Spacer()
                             ScrollView(.horizontal, showsIndicators: false) {
                                 ZStack {
-                                    LazyHStack(alignment: .top, spacing: 20) {
-                                        ForEach(0..<count, id: \.self) { index in
-                                            VStack {
-                                                Text("Page \(index)")
-                                                    .backgroundStyle(.blue)
-                                                    .onTapGesture {
-                                                        full = true
-                                                    }
-                                            }
-                                            .frame(width: gproxy.size.width,
-                                                   height: gproxy.size.height
-                                            )
-                                            .scaleEffect(scale)
-                                            .frame(width: gproxy.size.width * scale,
-                                                   height: gproxy.size.height * scale
-                                            )
-                                            .background()
-                                            .backgroundStyle(.green)
-                                            .padding([.leading], index == 0 ? gproxy.size.width * scaleMargin / 2 : 0)
-                                            .padding([.trailing], index == count - 1 ? gproxy.size.width * scaleMargin / 2 : 0)
-                                        }
-                                    }
                                     GeometryReader { proxy in
                                         let offset = proxy.frame(in: .named("scroll")).minX
                                         aaaa(offset: offset, readerProxy: gproxy)
+                                    }
+                                    LazyHStack(alignment: .top, spacing: 20) {
+                                        ForEach(0..<count, id: \.self) { index in
+                                            Group {
+                                                VStack {
+                                                    Text("Page \(index)")
+                                                        .backgroundStyle(.blue)
+                                                }
+                                                .allowsHitTesting(false)
+                                                .frame(width: gproxy.size.width,
+                                                       height: gproxy.size.height
+                                                )
+                                                .scaleEffect(scale)
+                                                .frame(width: gproxy.size.width * scale,
+                                                       height: gproxy.size.height * scale
+                                                )
+                                                .background()
+                                                .backgroundStyle(.green)
+                                                .padding([.leading], index == 0 ? gproxy.size.width * scaleMargin / 2 : 0)
+                                                .padding([.trailing], index == count - 1 ? gproxy.size.width * scaleMargin / 2 : 0)
+                                            }
+                                            .onTapGesture {
+                                                GZLogFunc()
+                                                full = true
+                                            }
+                                        }
                                     }
                                 }
                             }
