@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var full: Bool = false
+    @State var full: Bool = true
     let count: Int = 10
     let scale: CGFloat = 0.75
     let scaleMargin: CGFloat = 0.25
@@ -90,7 +90,15 @@ struct ContentView: View {
                             .padding([.leading, .trailing], gproxy.size.width * scaleMargin / 2)
                             .onAppear {
                                 sliderDragging = true
-                                sproxy.scrollTo(currentIndex, anchor: .center)
+                                if currentIndex == 0 {
+                                    sproxy.scrollTo(currentIndex, anchor: .leading)
+                                }
+                                else if currentIndex == count - 1 {
+                                    sproxy.scrollTo(currentIndex, anchor: .trailing)
+                                }
+                                else {
+                                    sproxy.scrollTo(currentIndex, anchor: .center)
+                                }
                                 DispatchQueue.main.async {
                                     sliderDragging = false
                                 }
