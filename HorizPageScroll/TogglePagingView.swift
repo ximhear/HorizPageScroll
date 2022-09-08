@@ -1,5 +1,5 @@
 //
-//  BlockPagingView.swift
+//  TogglePagingView.swift
 //  HorizPageScroll
 //
 //  Created by gzonelee on 2022/09/06.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct BlockPagingView: View {
+struct TogglePagingView: View {
     @State var full: Bool = true
     let count: Int = 10
     let scale: CGFloat = 0.75
@@ -195,8 +195,8 @@ struct BlockPagingView: View {
     }
 }
 
-struct BlockPagingView_Previews: PreviewProvider {
+struct TogglePagingView_Previews: PreviewProvider {
     static var previews: some View {
-        BlockPagingView()
+        TogglePagingView()
     }
 }

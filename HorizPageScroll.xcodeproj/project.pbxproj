@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		EC3C120828C724E200549588 /* HorizPageScrollApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3C120728C724E200549588 /* HorizPageScrollApp.swift */; };
-		EC3C120A28C724E200549588 /* BlockPagingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3C120928C724E200549588 /* BlockPagingView.swift */; };
+		EC3C120A28C724E200549588 /* TogglePagingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3C120928C724E200549588 /* TogglePagingView.swift */; };
 		EC3C120C28C724E200549588 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EC3C120B28C724E200549588 /* Assets.xcassets */; };
 		EC3C120F28C724E200549588 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EC3C120E28C724E200549588 /* Preview Assets.xcassets */; };
 		EC3C121628C72B4D00549588 /* TTT.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3C121528C72B4D00549588 /* TTT.swift */; };
@@ -20,7 +20,7 @@
 /* Begin PBXFileReference section */
 		EC3C120428C724E200549588 /* HorizPageScroll.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HorizPageScroll.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC3C120728C724E200549588 /* HorizPageScrollApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizPageScrollApp.swift; sourceTree = "<group>"; };
-		EC3C120928C724E200549588 /* BlockPagingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockPagingView.swift; sourceTree = "<group>"; };
+		EC3C120928C724E200549588 /* TogglePagingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TogglePagingView.swift; sourceTree = "<group>"; };
 		EC3C120B28C724E200549588 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EC3C120E28C724E200549588 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EC3C121528C72B4D00549588 /* TTT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTT.swift; sourceTree = "<group>"; };
@@ -61,7 +61,7 @@
 			children = (
 				EC3C120728C724E200549588 /* HorizPageScrollApp.swift */,
 				EC8105E928CA221100B07BFC /* ContentView.swift */,
-				EC3C120928C724E200549588 /* BlockPagingView.swift */,
+				EC3C120928C724E200549588 /* TogglePagingView.swift */,
 				EC3C121728C7B74600549588 /* GHorizontalSlider.swift */,
 				EC3C121928C7B77C00549588 /* GZLog.swift */,
 				EC3C121528C72B4D00549588 /* TTT.swift */,
@@ -149,7 +149,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EC3C120A28C724E200549588 /* BlockPagingView.swift in Sources */,
+				EC3C120A28C724E200549588 /* TogglePagingView.swift in Sources */,
 				EC3C121628C72B4D00549588 /* TTT.swift in Sources */,
 				EC8105EA28CA221100B07BFC /* ContentView.swift in Sources */,
 				EC3C121828C7B74600549588 /* GHorizontalSlider.swift in Sources */,
