@@ -28,8 +28,8 @@ struct GHorizontalSlider<Content: View>: View {
         _sliderChanged = sliderChanged
         self.thumbSize = thumbSize
         self.thumbView = thumb()
-        GZLogFunc("value : \($currentIndex)")
-        GZLogFunc("draggingOffsetX : \($draggingOffsetX)")
+//        GZLogFunc("value : \($currentIndex)")
+//        GZLogFunc("draggingOffsetX : \($draggingOffsetX)")
     }
     
     
@@ -78,8 +78,8 @@ struct GHorizontalSlider<Content: View>: View {
                                         }
                                         currentIndex = Int(round(draggingOffsetX * CGFloat(maxValue) / m))
                                         draggingOffsetX = m / CGFloat(maxValue) * CGFloat(currentIndex)
-                                        GZLogFunc(currentIndex)
-                                        GZLogFunc(draggingOffsetX)
+//                                        GZLogFunc(currentIndex)
+//                                        GZLogFunc(draggingOffsetX)
                                         offsetX = draggingOffsetX
                                         if old != currentIndex {
                                             sliderChanged &+= 1

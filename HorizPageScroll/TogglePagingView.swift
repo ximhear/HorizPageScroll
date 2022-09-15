@@ -20,6 +20,7 @@ struct TogglePagingView: View {
     @State var sliderChanged: Int = 0
     @State var pageOffset: CGFloat = 0
     @State var sliderWidth: CGFloat = 0
+    @State var horizontalSpacing: CGFloat = 20
     var maxValue: Int {
         return count - 1
     }
@@ -92,45 +93,45 @@ struct TogglePagingView: View {
     
     func scrollContainer(sproxy: ScrollViewProxy, gproxy: GeometryProxy) -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            ZStack {
+            HStack(alignment: .top, spacing: horizontalSpacing) {
+                ForEach(0..<count, id: \.self) { index in
+                    Group {
+                        VStack {
+                            Text("Page \(index)")
+                                .backgroundStyle(.blue)
+                            Spacer()
+                            Text("Page \(index)")
+                                .backgroundStyle(.blue)
+                            Spacer()
+                            Text("Page \(index)")
+                                .backgroundStyle(.blue)
+                        }
+                        .allowsHitTesting(false)
+                        .frame(width: gproxy.size.width,
+                               height: gproxy.size.height
+                        )
+                        .scaleEffect(scale)
+                        .frame(width: gproxy.size.width * scale,
+                               height: gproxy.size.height * scale
+                        )
+                        .background()
+                        .backgroundStyle(.green)
+                        .padding([.leading], index == 0 ? gproxy.size.width * scaleMargin / 2 : 0)
+                        .padding([.trailing], index == count - 1 ? gproxy.size.width * scaleMargin / 2 : 0)
+                    }
+                    .onTapGesture {
+                        GZLogFunc()
+                        currentIndex = index
+                        full = true
+                    }
+                }
+            }
+            .background(content: {
                 GeometryReader { proxy in
                     let offset = proxy.frame(in: .named("scroll")).minX
                     aaaa(offset: offset, readerProxy: gproxy)
                 }
-                LazyHStack(alignment: .top, spacing: 20) {
-                    ForEach(0..<count, id: \.self) { index in
-                        Group {
-                            VStack {
-                                Text("Page \(index)")
-                                    .backgroundStyle(.blue)
-                                Spacer()
-                                Text("Page \(index)")
-                                    .backgroundStyle(.blue)
-                                Spacer()
-                                Text("Page \(index)")
-                                    .backgroundStyle(.blue)
-                            }
-                            .allowsHitTesting(false)
-                            .frame(width: gproxy.size.width,
-                                   height: gproxy.size.height
-                            )
-                            .scaleEffect(scale)
-                            .frame(width: gproxy.size.width * scale,
-                                   height: gproxy.size.height * scale
-                            )
-                            .background()
-                            .backgroundStyle(.green)
-                            .padding([.leading], index == 0 ? gproxy.size.width * scaleMargin / 2 : 0)
-                            .padding([.trailing], index == count - 1 ? gproxy.size.width * scaleMargin / 2 : 0)
-                        }
-                        .onTapGesture {
-                            GZLogFunc()
-                            currentIndex = index
-                            full = true
-                        }
-                    }
-                }
-            }
+            })
         }
         .coordinateSpace(name: "scroll")
         .padding([.leading, .trailing], -gproxy.size.width * scaleMargin / 2)
@@ -159,7 +160,7 @@ struct TogglePagingView: View {
     }
     
     func aaaa(offset: CGFloat, readerProxy: GeometryProxy) -> some View {
-        GZLogFunc(offset)
+//        GZLogFunc("offset :\(-offset)")
         
         if sliderDragging == false {
             
@@ -171,42 +172,26 @@ struct TogglePagingView: View {
                 }
                 pageOffset = offset
                 
-                let v = offset
+                let v = -offset
                 let pageWidth = readerProxy.size.width * scale
-                let value = v - readerProxy.size.width * scale / 2.0
-                var start: CGFloat = 20
+                let value = v + pageWidth / 2.0
+                var start: CGFloat = 0
                 var minIndex: Int = 0
                 var minDistance: CGFloat = 100000
                 for x in 0..<count {
-                    start -= 20
-                    let end = start - pageWidth
-                    if x == 0 && start < v {
-                        currentIndex = 0
-                        draggingOffsetX = (sliderWidth - thumbSize.width) / CGFloat(maxValue) * CGFloat(currentIndex)
-                        offsetX = draggingOffsetX
-                        GZLogFunc(currentIndex)
-                        return
-                    }
-                    if x == count - 1 {
-                        if end > v {
-                            currentIndex = x
-                            draggingOffsetX = (sliderWidth - thumbSize.width) / CGFloat(maxValue) * CGFloat(currentIndex)
-                            offsetX = draggingOffsetX
-                            GZLogFunc(currentIndex)
-                            return
-                        }
-                    }
-                    if minDistance > abs((start + end) / 2.0 - value) {
-                        minDistance = abs((start + end) / 2.0 - value)
+                    let end = start + pageWidth
+                    let center = (start + end) / 2.0
+                    if minDistance > abs(center - value) {
+                        minDistance = abs(center - value)
                         minIndex = x
                     }
-                    start -= pageWidth
+                    start = end
+                    start += horizontalSpacing
                 }
                 currentIndex = minIndex
                 draggingOffsetX = (sliderWidth - thumbSize.width) / CGFloat(maxValue) * CGFloat(currentIndex)
                 offsetX = draggingOffsetX
-                GZLogFunc(draggingOffsetX)
-                GZLogFunc(currentIndex)
+//                GZLogFunc("currentIndex :\(currentIndex)")
             }
         }
         return Text("")
