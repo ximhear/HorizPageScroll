@@ -7,9 +7,10 @@
 
 import SwiftUI
 
-struct TogglePagingView: View {
+
+struct TogglePagingView<FullView: View, CompactView: View>: View {
     @State var full: Bool = true
-    let count: Int = 10
+    let count: Int
     let scale: CGFloat = 0.75
     let scaleMargin: CGFloat = 0.25
     let thumbSize: CGSize = .init(width: 80, height: 40)
@@ -25,22 +26,24 @@ struct TogglePagingView: View {
         return count - 1
     }
     
+    typealias FullContentBlock = (Int, @escaping () -> Void) -> FullView
+    typealias CompactContentBlock = (Int) -> CompactView
+    
+    @ViewBuilder var fullContent: FullContentBlock
+    @ViewBuilder var compactContent: CompactContentBlock
+    
+    init(count: Int, @ViewBuilder fullContent: @escaping FullContentBlock, @ViewBuilder compactContent: @escaping CompactContentBlock) {
+        self.count = count
+        self.fullContent = fullContent
+        self.compactContent = compactContent
+    }
+    
     var body: some View {
         VStack {
             if full {
                 TabView(selection: $currentIndex) {
                     ForEach(0..<count, id: \.self) { index in
-                        VStack {
-                            Text("Page \(index)")
-                            Spacer()
-                            Text("Page \(index)")
-                                .backgroundStyle(.blue)
-                                .onTapGesture {
-                                    full = false
-                                }
-                            Spacer()
-                            Text("Page \(index)")
-                        }
+                        fullContent(index, toggleMode)
                     }
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
@@ -49,23 +52,23 @@ struct TogglePagingView: View {
                 ScrollViewReader { sproxy in
                     GeometryReader { gproxy in
                         VStack {
-//                            Spacer()
                             scrollContainer(sproxy: sproxy, gproxy: gproxy)
                                 .background()
                                 .backgroundStyle(.cyan)
-//                            GeometryReader { proxy in
                             horizontalSlider(width: gproxy.size.width - 16 * 2, sproxy: sproxy)
-//                            }
                             .padding([.leading, .trailing], 16)
                             .background()
                             .backgroundStyle(.yellow)
-//                            Spacer()
                         }
                         .frame(width: gproxy.size.width, height: gproxy.size.height)
                     }
                 }
             }
         }
+    }
+    
+    func toggleMode() {
+        full.toggle()
     }
     
     func horizontalSlider(width: CGFloat, sproxy: ScrollViewProxy) -> some View {
@@ -95,35 +98,24 @@ struct TogglePagingView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .top, spacing: horizontalSpacing) {
                 ForEach(0..<count, id: \.self) { index in
-                    Group {
-                        VStack {
-                            Text("Page \(index)")
-                                .backgroundStyle(.blue)
-                            Spacer()
-                            Text("Page \(index)")
-                                .backgroundStyle(.blue)
-                            Spacer()
-                            Text("Page \(index)")
-                                .backgroundStyle(.blue)
-                        }
-                        .allowsHitTesting(false)
-                        .frame(width: gproxy.size.width,
-                               height: gproxy.size.height
-                        )
-                        .scaleEffect(scale)
-                        .frame(width: gproxy.size.width * scale,
-                               height: gproxy.size.height * scale
-                        )
-                        .background()
-                        .backgroundStyle(.green)
-                        .padding([.leading], index == 0 ? gproxy.size.width * scaleMargin / 2 : 0)
-                        .padding([.trailing], index == count - 1 ? gproxy.size.width * scaleMargin / 2 : 0)
-                    }
+                    compactContent(index)
+                    .allowsHitTesting(false)
+                    .frame(width: gproxy.size.width,
+                           height: gproxy.size.height
+                    )
+                    .scaleEffect(scale)
+                    .frame(width: gproxy.size.width * scale,
+                           height: gproxy.size.height * scale
+                    )
+                    .background()
+                    .backgroundStyle(.green)
                     .onTapGesture {
                         GZLogFunc()
                         currentIndex = index
-                        full = true
+                        toggleMode()
                     }
+                    .padding([.leading], index == 0 ? gproxy.size.width * scaleMargin / 2 : 0)
+                    .padding([.trailing], index == count - 1 ? gproxy.size.width * scaleMargin / 2 : 0)
                 }
             }
             .background(content: {
@@ -200,6 +192,29 @@ struct TogglePagingView: View {
 
 struct TogglePagingView_Previews: PreviewProvider {
     static var previews: some View {
-        TogglePagingView()
+        TogglePagingView(count: 5) { index, toggleMode in
+            VStack {
+                Text("Page \(index)")
+                Spacer()
+                Text("Page \(index)")
+                    .backgroundStyle(.blue)
+                    .onTapGesture {
+                        toggleMode()
+                    }
+                Spacer()
+                Text("Page \(index)")
+            }
+        } compactContent: { index in
+            VStack {
+                Text("Page \(index)")
+                    .backgroundStyle(.blue)
+                Spacer()
+                Text("Page \(index)")
+                    .backgroundStyle(.blue)
+                Spacer()
+                Text("Page \(index)")
+                    .backgroundStyle(.blue)
+            }
+        }
     }
 }
