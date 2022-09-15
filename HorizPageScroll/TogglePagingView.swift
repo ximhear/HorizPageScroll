@@ -14,7 +14,6 @@ struct TogglePagingView<FullView: View, CompactView: View>: View {
     let scale: CGFloat = 0.75
     let scaleMargin: CGFloat = 0.25
     let thumbSize: CGSize = .init(width: 80, height: 40)
-    @State var offsetX: CGFloat = 0
     @State var draggingOffsetX: CGFloat = 0
     @State var sliderDragging: Bool = false
     @State var currentIndex: Int = 0
@@ -76,7 +75,6 @@ struct TogglePagingView<FullView: View, CompactView: View>: View {
             sliderWidth = width
         }
         return GHorizontalSlider(maxValue: count - 1,
-                          offsetX: $offsetX,
                           draggingOffsetX: $draggingOffsetX,
                           sliderDragging: $sliderDragging,
                           currentIndex: $currentIndex,
@@ -182,7 +180,7 @@ struct TogglePagingView<FullView: View, CompactView: View>: View {
                 }
                 currentIndex = minIndex
                 draggingOffsetX = (sliderWidth - thumbSize.width) / CGFloat(maxValue) * CGFloat(currentIndex)
-                offsetX = draggingOffsetX
+//                offsetX = draggingOffsetX
 //                GZLogFunc("currentIndex :\(currentIndex)")
             }
         }

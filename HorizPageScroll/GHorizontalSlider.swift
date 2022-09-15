@@ -13,15 +13,15 @@ struct GHorizontalSlider<Content: View>: View {
     
     let maxValue: Int
     let barHeight: CGFloat = 20
-    @Binding var offsetX: CGFloat
+    @State var offsetX: CGFloat
     @Binding var draggingOffsetX: CGFloat
     @Binding var sliderDragging: Bool
     @Binding var currentIndex: Int
     @Binding var sliderChanged: Int
     
-    init(maxValue: Int, offsetX: Binding<CGFloat>, draggingOffsetX: Binding<CGFloat>, sliderDragging: Binding<Bool>, currentIndex: Binding<Int>, sliderChanged: Binding<Int>, thumbSize: CGSize, @ViewBuilder thumb: () -> Content) {
+    init(maxValue: Int, draggingOffsetX: Binding<CGFloat>, sliderDragging: Binding<Bool>, currentIndex: Binding<Int>, sliderChanged: Binding<Int>, thumbSize: CGSize, @ViewBuilder thumb: () -> Content) {
         self.maxValue = maxValue
-        _offsetX = offsetX
+        _offsetX = State<CGFloat>.init(wrappedValue: draggingOffsetX.wrappedValue)
         _draggingOffsetX = draggingOffsetX
         _sliderDragging = sliderDragging
         _currentIndex = currentIndex
@@ -109,7 +109,6 @@ struct GHorizontalSlider<Content: View>: View {
 }
 
 struct GHorizontalSlider_Previews: PreviewProvider {
-    @State static var offsetX: CGFloat = 0
     @State static var draggingOffsetX: CGFloat = 0
     @State static var sliderDragging: Bool = false
     @State static var currentIndex: Int = 0
@@ -117,7 +116,6 @@ struct GHorizontalSlider_Previews: PreviewProvider {
     static var previews: some View {
         GHorizontalSlider(
             maxValue: 10,
-            offsetX: $offsetX,
             draggingOffsetX: $draggingOffsetX,
             sliderDragging: $sliderDragging,
             currentIndex: $currentIndex,
