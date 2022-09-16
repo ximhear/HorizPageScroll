@@ -9,29 +9,33 @@ import SwiftUI
 
 struct TTT: View {
     var body: some View {
-        VStack {
-            Text("1")
-            ZStack {
-                Rectangle()
-                    .fill(Color.cyan)
-                    .padding()
-                    .background()
-                    .backgroundStyle(.blue)
-//                GeometryReader { gproxy in
-                    VStack(alignment: .center) {
-                        Text("Hello")
-                        Text("Hello")
-                        Text("Hello")
-                    }
-//                    .frame(width: gproxy.size.width, height: gproxy.size.height)
-                    .background()
-                    .backgroundStyle(.red)
-//                }
+        TabView {
+            ForEach(0..<3, id: \.self) { index in
+                aaa()
             }
-            .padding()
+        }
+        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+        .padding()
+    }
+    
+    @ViewBuilder func aaa() -> some View {
+        GeometryReader { proxy in
+            VStack {
+                Text("aaa")
+            }
+            .frame(width: proxy.size.width, height: proxy.size.height)
             .background()
-            .backgroundStyle(.yellow)
-            Text("1")
+            .backgroundStyle(.red)
+        }
+    }
+    @ViewBuilder func bbb() -> some View {
+        VStack {
+            Text("bbb")
+        }
+    }
+    @ViewBuilder func ccc() -> some View {
+        VStack {
+            Text("ccc")
         }
     }
 }

@@ -8,40 +8,28 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var compactMode: Bool = false
     var body: some View {
         VStack {
             HStack {
-                Text("Title")
+                Text("Toggle Paging View")
+                    .bold()
+            }
+            .padding()
+            Button(compactMode ? "Full" : "Compact") {
+                compactMode.toggle()
             }
             VStack {
-                TogglePagingView(count: 5,
+                TogglePagingView(count: 3,
                                  thumbSize: .init(width: 80, height: 40),
                                  slideBarHeight: 20,
-                                 spacing: 10,
-                                 slideSidePadding: 16
+                                 spacing: 20,
+                                 slideSidePadding: 16,
+                                 compactMode: $compactMode
                 ) { index, toggleMode in
-                    VStack {
-                        Text("Page \(index)")
-                        Spacer()
-                        Text("Page \(index)")
-                            .backgroundStyle(.blue)
-                            .onTapGesture {
-                                toggleMode()
-                            }
-                        Spacer()
-                        Text("Page \(index)")
-                    }
+                    content(index: index)
                 } compactContent: { index in
-                    VStack {
-                        Text("Page \(index)")
-                            .backgroundStyle(.blue)
-                        Spacer()
-                        Text("Page \(index)")
-                            .backgroundStyle(.blue)
-                        Spacer()
-                        Text("Page \(index)")
-                            .backgroundStyle(.blue)
-                    }
+                    content(index: index)
                 }  thumbContent: {
                     RoundedRectangle(cornerRadius: 10)
                         .fill(Color.red)
@@ -50,13 +38,66 @@ struct ContentView: View {
                     RoundedRectangle(cornerRadius: 5)
                         .fill(Color.accentColor)
                 }
-//                .background()
-//                .backgroundStyle(.blue.opacity(0.3))
             }
             .padding()
             HStack {
-               Text("Bottom")
+                Text("Bottom Area")
+                    .bold()
             }
+        }
+    }
+    
+    @ViewBuilder func content(index: Int) -> some View {
+        GeometryReader { proxy in
+            VStack {
+                Text("\(index) page")
+                    .bold()
+                    .foregroundColor(.red)
+                    .padding()
+                    .background()
+                    .backgroundStyle(.green)
+                Grid {
+                    GridRow {
+                        VStack {
+                            AsyncImage(url: URL(string: "https://img.etnews.com/photonews/2003/1283500_20200318150357_900_0001.jpg")!) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                            } placeholder: {
+                                Color.purple.opacity(0.1)
+                            }
+                        }
+                        Text("Apple")
+                    }
+                    GridRow {
+                        Text("Globe")
+                        Image(systemName: "globe")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                    }
+                    GridRow {
+                        Image(systemName: "hand.wave")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                        Text("Hand")
+                    }
+                    GridRow {
+                        Text("Plus")
+                        Image(systemName: "plus")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                    }
+                    GridRow {
+                        Image(systemName: "book")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                        Text("Book")
+                    }
+                }
+            }
+            .frame(width: proxy.size.width, height: proxy.size.height)
+            .background()
+            .backgroundStyle(.yellow)
         }
     }
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, SlideBarView: View>: View {
-    @State var full: Bool = true
+    @Binding var compactMode: Bool
     let count: Int
     @State var scale: CGFloat = 0.75
     @State var scaleMargin: CGFloat = 0.25
@@ -43,6 +43,7 @@ struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, Slid
          slideBarHeight: CGFloat,
          spacing: CGFloat,
          slideSidePadding: CGFloat,
+         compactMode: Binding<Bool>,
          @ViewBuilder fullContent: @escaping FullContentBlock,
          @ViewBuilder compactContent: @escaping CompactContentBlock,
          @ViewBuilder thumbContent: @escaping ThumbBlock,
@@ -53,6 +54,7 @@ struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, Slid
         self.slideBarHeight = slideBarHeight
         self.spacing = spacing
         self.slideSidePadding = slideSidePadding
+        self._compactMode = compactMode
         self.fullContent = fullContent
         self.compactContent = compactContent
         self.thumbContent = thumbContent
@@ -61,7 +63,7 @@ struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, Slid
     
     var body: some View {
         VStack {
-            if full {
+            if compactMode == false {
                 TabView(selection: $currentIndex) {
                     ForEach(0..<count, id: \.self) { index in
                         fullContent(index, toggleMode)
@@ -90,7 +92,7 @@ struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, Slid
     }
     
     func toggleMode() {
-        full.toggle()
+        compactMode.toggle()
     }
     
     func horizontalSlider(width: CGFloat, sproxy: ScrollViewProxy) -> some View {
@@ -223,24 +225,16 @@ struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, Slid
 }
 
 struct TogglePagingView_Previews: PreviewProvider {
+    @State static var compactMode: Bool = false
     static var previews: some View {
         TogglePagingView(count: 5,
                          thumbSize: .init(width: 40, height: 40),
                          slideBarHeight: 10,
                          spacing: 10,
-                         slideSidePadding: 16
+                         slideSidePadding: 16,
+                         compactMode: $compactMode
         ) { index, toggleMode in
-            VStack {
-                Text("Page \(index)")
-                Spacer()
-                Text("Page \(index)")
-                    .backgroundStyle(.blue)
-                    .onTapGesture {
-                        toggleMode()
-                    }
-                Spacer()
-                Text("Page \(index)")
-            }
+            content(index: index)
         } compactContent: { index in
             VStack {
                 Text("Page \(index)")
@@ -259,6 +253,54 @@ struct TogglePagingView_Previews: PreviewProvider {
         } slideBarContent: {
             RoundedRectangle(cornerRadius: 5)
                 .fill(Color.accentColor)
+        }
+    }
+    
+    @ViewBuilder static func content(index: Int) -> some View {
+        GeometryReader { proxy in
+            VStack {
+                Text("\(index) page")
+                Grid {
+                    GridRow {
+                        VStack {
+                            AsyncImage(url: URL(string: "https://img.etnews.com/photonews/2003/1283500_20200318150357_900_0001.jpg")!) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                            } placeholder: {
+                                Color.purple.opacity(0.1)
+                            }
+                        }
+                    }
+                    GridRow {
+                        Text("Hello")
+                        Image(systemName: "globe")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                    }
+                    GridRow {
+                        Image(systemName: "hand.wave")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                        Text("World")
+                    }
+                    GridRow {
+                        Text("Hello")
+                        Image(systemName: "globe")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                    }
+                    GridRow {
+                        Image(systemName: "hand.wave")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                        Text("World")
+                    }
+                }
+            }
+            .frame(width: proxy.size.width)
+            .background()
+            .backgroundStyle(.yellow)
         }
     }
 }
