@@ -8,14 +8,36 @@
 import SwiftUI
 
 struct TTT: View {
+    let data = (1...100).map { "Item \($0)" }
+
+    let columns = [
+        GridItem(.adaptive(minimum: 80))
+    ]
+
     var body: some View {
-        TabView {
-            ForEach(0..<3, id: \.self) { index in
-                aaa()
+        GeometryReader { proxy in
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHGrid(rows: [GridItem(.fixed(proxy.size.width))], spacing: 0) {
+                    ForEach(data, id: \.self) { item in
+                        VStack {
+                            Text("\(proxy.size.width))")
+                            Text("\(proxy.size.height))")
+                            Text(item)
+                        }
+                        .frame(width: proxy.size.width, height: proxy.size.height)
+                        .background()
+                        .backgroundStyle(.red)
+                    }
+                }
             }
         }
-        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         .padding()
+        .onAppear {
+            UIScrollView.appearance().isPagingEnabled = true
+        }
+        .onDisappear {
+            UIScrollView.appearance().isPagingEnabled = false
+        }
     }
     
     @ViewBuilder func aaa() -> some View {
