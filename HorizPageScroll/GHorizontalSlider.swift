@@ -7,19 +7,30 @@
 
 import SwiftUI
 
-struct GHorizontalSlider<Content: View>: View {
-    let thumbView: Content
+struct GHorizontalSlider<ThumbView: View, SlideBarView: View>: View {
+    let thumbView: ThumbView
+    let slideBarView: SlideBarView
     let thumbSize: CGSize
     
     let maxValue: Int
-    let barHeight: CGFloat = 20
+    let barHeight: CGFloat
     @State var offsetX: CGFloat
     @Binding var draggingOffsetX: CGFloat
     @Binding var sliderDragging: Bool
     @Binding var currentIndex: Int
     @Binding var sliderChanged: Int
     
-    init(maxValue: Int, draggingOffsetX: Binding<CGFloat>, sliderDragging: Binding<Bool>, currentIndex: Binding<Int>, sliderChanged: Binding<Int>, thumbSize: CGSize, @ViewBuilder thumb: () -> Content) {
+    init(maxValue: Int,
+         draggingOffsetX: Binding<CGFloat>,
+         sliderDragging: Binding<Bool>,
+         currentIndex: Binding<Int>,
+         sliderChanged: Binding<Int>,
+         thumbSize: CGSize,
+         @ViewBuilder thumb: () -> ThumbView,
+         slideBarHeight: CGFloat,
+         @ViewBuilder slideBar: () -> SlideBarView
+    ) {
+        
         self.maxValue = maxValue
         _offsetX = State<CGFloat>.init(wrappedValue: draggingOffsetX.wrappedValue)
         _draggingOffsetX = draggingOffsetX
@@ -28,8 +39,8 @@ struct GHorizontalSlider<Content: View>: View {
         _sliderChanged = sliderChanged
         self.thumbSize = thumbSize
         self.thumbView = thumb()
-//        GZLogFunc("value : \($currentIndex)")
-//        GZLogFunc("draggingOffsetX : \($draggingOffsetX)")
+        barHeight = slideBarHeight
+        self.slideBarView = slideBar()
     }
     
     
@@ -38,8 +49,7 @@ struct GHorizontalSlider<Content: View>: View {
         HStack {
             GeometryReader { reader in
                 ZStack {
-                    RoundedRectangle(cornerRadius: 5)
-                        .fill(Color.accentColor)
+                    slideBarView
                         .frame(width: reader.size.width - thumbSize.width, height: barHeight)
                     HStack() {
                         thumbView
@@ -96,15 +106,13 @@ struct GHorizontalSlider<Content: View>: View {
                 .onAppear(perform: {
                     draggingOffsetX = (reader.size.width - thumbSize.width) / CGFloat(maxValue) * CGFloat(currentIndex)
                     offsetX = draggingOffsetX
-                    GZLogFunc(reader.size.width)
-                    GZLogFunc(currentIndex)
+//                    GZLogFunc(reader.size.width)
+//                    GZLogFunc(currentIndex)
                 })
                 .frame(width: reader.size.width)
             }
         }
         .frame(height: max(barHeight, thumbSize.height))
-        .background()
-        .backgroundStyle(.blue.opacity(0.1))
     }
 }
 
@@ -120,11 +128,20 @@ struct GHorizontalSlider_Previews: PreviewProvider {
             sliderDragging: $sliderDragging,
             currentIndex: $currentIndex,
             sliderChanged: $sliderChanged,
-            thumbSize: .init(width: 80, height: 40)) {
+            thumbSize: .init(width: 80, height: 40),
+            thumb: {
                 RoundedRectangle(cornerRadius: 10)
                     .fill(Color.red)
                     .opacity(0.5)
+            },
+            slideBarHeight: 20,
+            slideBar: {
+                RoundedRectangle(cornerRadius: 5)
+                    .fill(Color.accentColor)
             }
+        )
             .padding()
+            .background()
+            .backgroundStyle(.blue.opacity(0.1))
     }
 }

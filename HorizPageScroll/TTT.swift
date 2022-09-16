@@ -11,20 +11,26 @@ struct TTT: View {
     var body: some View {
         VStack {
             Text("1")
-            GeometryReader { gproxy in
-                VStack(alignment: .center) {
-                    Spacer()
-                    Text("Hello")
-                    Spacer()
-                    Text("Hello")
-                    Spacer()
-                    Text("Hello")
-                    Spacer()
-                }
-                .frame(width: gproxy.size.width, height: gproxy.size.height)
-                .background()
-                .backgroundStyle(.red)
+            ZStack {
+                Rectangle()
+                    .fill(Color.cyan)
+                    .padding()
+                    .background()
+                    .backgroundStyle(.blue)
+//                GeometryReader { gproxy in
+                    VStack(alignment: .center) {
+                        Text("Hello")
+                        Text("Hello")
+                        Text("Hello")
+                    }
+//                    .frame(width: gproxy.size.width, height: gproxy.size.height)
+                    .background()
+                    .backgroundStyle(.red)
+//                }
             }
+            .padding()
+            .background()
+            .backgroundStyle(.yellow)
             Text("1")
         }
     }

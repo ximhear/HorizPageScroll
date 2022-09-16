@@ -8,12 +8,15 @@
 import SwiftUI
 
 
-struct TogglePagingView<FullView: View, CompactView: View>: View {
+struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, SlideBarView: View>: View {
     @State var full: Bool = true
     let count: Int
-    let scale: CGFloat = 0.75
-    let scaleMargin: CGFloat = 0.25
-    let thumbSize: CGSize = .init(width: 80, height: 40)
+    @State var scale: CGFloat = 0.75
+    @State var scaleMargin: CGFloat = 0.25
+    let thumbSize: CGSize
+    let slideBarHeight: CGFloat
+    let spacing: CGFloat
+    let slideSidePadding: CGFloat
     @State var draggingOffsetX: CGFloat = 0
     @State var sliderDragging: Bool = false
     @State var currentIndex: Int = 0
@@ -27,14 +30,33 @@ struct TogglePagingView<FullView: View, CompactView: View>: View {
     
     typealias FullContentBlock = (Int, @escaping () -> Void) -> FullView
     typealias CompactContentBlock = (Int) -> CompactView
+    typealias ThumbBlock = () -> ThumbView
+    typealias SlideBarBlock = () -> SlideBarView
     
     @ViewBuilder var fullContent: FullContentBlock
     @ViewBuilder var compactContent: CompactContentBlock
+    @ViewBuilder var thumbContent: ThumbBlock
+    @ViewBuilder var slideBarContent: SlideBarBlock
     
-    init(count: Int, @ViewBuilder fullContent: @escaping FullContentBlock, @ViewBuilder compactContent: @escaping CompactContentBlock) {
+    init(count: Int,
+         thumbSize: CGSize,
+         slideBarHeight: CGFloat,
+         spacing: CGFloat,
+         slideSidePadding: CGFloat,
+         @ViewBuilder fullContent: @escaping FullContentBlock,
+         @ViewBuilder compactContent: @escaping CompactContentBlock,
+         @ViewBuilder thumbContent: @escaping ThumbBlock,
+         @ViewBuilder slideBarContent: @escaping SlideBarBlock
+    ) {
         self.count = count
+        self.thumbSize = thumbSize
+        self.slideBarHeight = slideBarHeight
+        self.spacing = spacing
+        self.slideSidePadding = slideSidePadding
         self.fullContent = fullContent
         self.compactContent = compactContent
+        self.thumbContent = thumbContent
+        self.slideBarContent = slideBarContent
     }
     
     var body: some View {
@@ -50,14 +72,15 @@ struct TogglePagingView<FullView: View, CompactView: View>: View {
             else {
                 ScrollViewReader { sproxy in
                     GeometryReader { gproxy in
-                        VStack {
+                        VStack(spacing: 0) {
                             scrollContainer(sproxy: sproxy, gproxy: gproxy)
-                                .background()
-                                .backgroundStyle(.cyan)
-                            horizontalSlider(width: gproxy.size.width - 16 * 2, sproxy: sproxy)
-                            .padding([.leading, .trailing], 16)
-                            .background()
-                            .backgroundStyle(.yellow)
+//                                .background()
+//                                .backgroundStyle(.cyan)
+                            horizontalSlider(width: gproxy.size.width - slideSidePadding * 2, sproxy: sproxy)
+                            .padding([.leading, .trailing], slideSidePadding)
+//                            .background()
+//                            .backgroundStyle(.yellow)
+                            .padding([.top], spacing)
                         }
                         .frame(width: gproxy.size.width, height: gproxy.size.height)
                     }
@@ -75,25 +98,35 @@ struct TogglePagingView<FullView: View, CompactView: View>: View {
             sliderWidth = width
         }
         return GHorizontalSlider(maxValue: count - 1,
-                          draggingOffsetX: $draggingOffsetX,
-                          sliderDragging: $sliderDragging,
-                          currentIndex: $currentIndex,
-                          sliderChanged: $sliderChanged,
-                          thumbSize: thumbSize) {
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color.red)
-                .opacity(0.5)
+                                 draggingOffsetX: $draggingOffsetX,
+                                 sliderDragging: $sliderDragging,
+                                 currentIndex: $currentIndex,
+                                 sliderChanged: $sliderChanged,
+                                 thumbSize: thumbSize,
+                                 thumb: {
+            thumbContent()
                 .onChange(of: sliderChanged) { newValue in
                     
                     withAnimation { //(.easeInOut(duration: 0.15)) {
                         sproxy.scrollTo(currentIndex, anchor: .center)
                     }
                 }
-        }
+        },
+                                 slideBarHeight: slideBarHeight,
+                                 slideBar: {
+            slideBarContent()
+        })
     }
     
     func scrollContainer(sproxy: ScrollViewProxy, gproxy: GeometryProxy) -> some View {
-        ScrollView(.horizontal, showsIndicators: false) {
+        DispatchQueue.main.async {
+            let newScale = (gproxy.size.width - max(slideBarHeight, thumbSize.height) - spacing) / gproxy.size.width * 0.8
+            if newScale != scale {
+                scale = newScale
+                scaleMargin = 1.0 - scale
+            }
+        }
+        return ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .top, spacing: horizontalSpacing) {
                 ForEach(0..<count, id: \.self) { index in
                     compactContent(index)
@@ -106,7 +139,8 @@ struct TogglePagingView<FullView: View, CompactView: View>: View {
                            height: gproxy.size.height * scale
                     )
                     .background()
-                    .backgroundStyle(.green)
+                    .backgroundStyle(.green.opacity(0.2))
+                    .border(.gray.opacity(0.5))
                     .onTapGesture {
                         GZLogFunc()
                         currentIndex = index
@@ -130,7 +164,7 @@ struct TogglePagingView<FullView: View, CompactView: View>: View {
             height: gproxy.size.height * scale
         )
         .background()
-        .backgroundStyle(.blue)
+//        .backgroundStyle(.blue)
         .padding([.leading, .trailing], gproxy.size.width * scaleMargin / 2)
         .onAppear {
             sliderDragging = true
@@ -190,7 +224,12 @@ struct TogglePagingView<FullView: View, CompactView: View>: View {
 
 struct TogglePagingView_Previews: PreviewProvider {
     static var previews: some View {
-        TogglePagingView(count: 5) { index, toggleMode in
+        TogglePagingView(count: 5,
+                         thumbSize: .init(width: 40, height: 40),
+                         slideBarHeight: 10,
+                         spacing: 10,
+                         slideSidePadding: 16
+        ) { index, toggleMode in
             VStack {
                 Text("Page \(index)")
                 Spacer()
@@ -213,6 +252,13 @@ struct TogglePagingView_Previews: PreviewProvider {
                 Text("Page \(index)")
                     .backgroundStyle(.blue)
             }
+        } thumbContent: {
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color.red)
+                .opacity(0.5)
+        } slideBarContent: {
+            RoundedRectangle(cornerRadius: 5)
+                .fill(Color.accentColor)
         }
     }
 }
