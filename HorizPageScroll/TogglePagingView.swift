@@ -129,7 +129,7 @@ struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, Slid
             }
         }
         return ScrollView(.horizontal, showsIndicators: false) {
-            HStack(alignment: .top, spacing: horizontalSpacing) {
+            LazyHStack(alignment: .top, spacing: horizontalSpacing) {
                 ForEach(0..<count, id: \.self) { index in
                     compactContent(index)
                     .allowsHitTesting(false)

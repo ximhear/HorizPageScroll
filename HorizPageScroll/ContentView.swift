@@ -20,7 +20,7 @@ struct ContentView: View {
                 compactMode.toggle()
             }
             VStack {
-                TogglePagingView(count: 3,
+                TogglePagingView(count: 1500,
                                  thumbSize: .init(width: 80, height: 40),
                                  slideBarHeight: 20,
                                  spacing: 20,
@@ -58,15 +58,9 @@ struct ContentView: View {
                     .backgroundStyle(.green)
                 Grid {
                     GridRow {
-                        VStack {
-                            AsyncImage(url: URL(string: "https://img.etnews.com/photonews/2003/1283500_20200318150357_900_0001.jpg")!) { image in
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                            } placeholder: {
-                                Color.purple.opacity(0.1)
-                            }
-                        }
+                        Image(systemName: "applelogo")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
                         Text("Apple")
                     }
                     GridRow {
