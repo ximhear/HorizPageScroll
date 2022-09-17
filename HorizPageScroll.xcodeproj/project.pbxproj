@@ -15,6 +15,7 @@
 		EC3C121828C7B74600549588 /* GHorizontalSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3C121728C7B74600549588 /* GHorizontalSlider.swift */; };
 		EC3C121A28C7B77C00549588 /* GZLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3C121928C7B77C00549588 /* GZLog.swift */; };
 		EC8105EA28CA221100B07BFC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8105E928CA221100B07BFC /* ContentView.swift */; };
+		ECD113D028D613E800BB442F /* SwiftUIPager in Frameworks */ = {isa = PBXBuildFile; productRef = ECD113CF28D613E800BB442F /* SwiftUIPager */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECD113D028D613E800BB442F /* SwiftUIPager in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,6 +97,9 @@
 			dependencies = (
 			);
 			name = HorizPageScroll;
+			packageProductDependencies = (
+				ECD113CF28D613E800BB442F /* SwiftUIPager */,
+			);
 			productName = HorizPageScroll;
 			productReference = EC3C120428C724E200549588 /* HorizPageScroll.app */;
 			productType = "com.apple.product-type.application";
@@ -123,6 +128,9 @@
 				Base,
 			);
 			mainGroup = EC3C11FB28C724E200549588;
+			packageReferences = (
+				ECD113CE28D613E800BB442F /* XCRemoteSwiftPackageReference "SwiftUIPager" */,
+			);
 			productRefGroup = EC3C120528C724E200549588 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -355,6 +363,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		ECD113CE28D613E800BB442F /* XCRemoteSwiftPackageReference "SwiftUIPager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/fermoya/SwiftUIPager.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		ECD113CF28D613E800BB442F /* SwiftUIPager */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ECD113CE28D613E800BB442F /* XCRemoteSwiftPackageReference "SwiftUIPager" */;
+			productName = SwiftUIPager;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = EC3C11FC28C724E200549588 /* Project object */;
 }

@@ -20,7 +20,7 @@ struct ContentView: View {
                 compactMode.toggle()
             }
             VStack {
-                TogglePagingView(count: 10,
+                TogglePagingView(count: 1200,
                                  thumbSize: .init(width: 80, height: 40),
                                  slideBarHeight: 20,
                                  spacing: 20,

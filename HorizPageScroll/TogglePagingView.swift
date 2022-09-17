@@ -6,6 +6,28 @@
 //
 
 import SwiftUI
+import SwiftUIPager
+import Combine
+
+ class PageManager: ObservableObject {
+    @Published var page: Page
+    @Published var currentIndex: Int
+    var subscriptions = Set<AnyCancellable>()
+    
+    init(pageIndex: Int) {
+        currentIndex = pageIndex
+        page = Page.withIndex(pageIndex)
+        page.objectWillChange.sink {[weak self] in
+            guard let welf = self else { return }
+            GZLogFunc(welf.page.index)
+            GZLogFunc(welf.currentIndex)
+            if welf.page.index != welf.currentIndex {
+                welf.currentIndex = welf.page.index
+            }
+        }
+        .store(in: &subscriptions)
+    }
+}
 
 
 struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, SlideBarView: View>: View {
@@ -19,14 +41,15 @@ struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, Slid
     let slideSidePadding: CGFloat
     @State var draggingOffsetX: CGFloat = 0
     @State var sliderDragging: Bool = false
-    @State var currentIndex: Int = 0
     @State var sliderChanged: Int = 0
     @State var pageOffset: CGFloat = 0
     @State var sliderWidth: CGFloat = 0
     @State var horizontalSpacing: CGFloat = 20
+    @StateObject var pageManager: PageManager
     var maxValue: Int {
         return count - 1
     }
+    let data: [Int]
     
     typealias FullContentBlock = (Int, @escaping () -> Void) -> FullView
     typealias CompactContentBlock = (Int) -> CompactView
@@ -49,7 +72,9 @@ struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, Slid
          @ViewBuilder thumbContent: @escaping ThumbBlock,
          @ViewBuilder slideBarContent: @escaping SlideBarBlock
     ) {
+        _pageManager = StateObject(wrappedValue: PageManager(pageIndex: 0)) 
         self.count = count
+        self.data = Array(0..<count)
         self.thumbSize = thumbSize
         self.slideBarHeight = slideBarHeight
         self.spacing = spacing
@@ -64,12 +89,21 @@ struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, Slid
     var body: some View {
         VStack {
             if compactMode == false {
-                TabView(selection: $currentIndex) {
-                    ForEach(0..<count, id: \.self) { index in
-                        fullContent(index, toggleMode)
+                GeometryReader { proxy in
+                    Pager(page: pageManager.page,
+                          data: self.data,
+                          id: \.self) { page in
+                        self.fullContent(page, toggleMode)
                     }
+                          .interactive(rotation: true)
+                    //                        .interactive(scale: 0.9)
+                    //                        .interactive(opacity: 0.5)
+                    //                        .itemSpacing(10)
+                    //                        .itemAspectRatio(0.5, alignment: .end)
+                    //                        .padding(8)
+                          .frame(width:  proxy.size.width,
+                                 height: proxy.size.height)
                 }
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             }
             else {
                 ScrollViewReader { sproxy in
@@ -102,7 +136,7 @@ struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, Slid
         return GHorizontalSlider(maxValue: count - 1,
                                  draggingOffsetX: $draggingOffsetX,
                                  sliderDragging: $sliderDragging,
-                                 currentIndex: $currentIndex,
+                                 currentIndex: $pageManager.currentIndex,
                                  sliderChanged: $sliderChanged,
                                  thumbSize: thumbSize,
                                  thumb: {
@@ -110,7 +144,7 @@ struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, Slid
                 .onChange(of: sliderChanged) { newValue in
                     
                     withAnimation { //(.easeInOut(duration: 0.15)) {
-                        sproxy.scrollTo(currentIndex, anchor: .center)
+                        sproxy.scrollTo(pageManager.currentIndex, anchor: .center)
                     }
                 }
         },
@@ -145,7 +179,8 @@ struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, Slid
                     .border(.gray.opacity(0.5))
                     .onTapGesture {
                         GZLogFunc()
-                        currentIndex = index
+                        pageManager.currentIndex = index
+                        pageManager.page.update(.new(index: index))
                         toggleMode()
                     }
                     .padding([.leading], index == 0 ? gproxy.size.width * scaleMargin / 2 : 0)
@@ -170,14 +205,14 @@ struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, Slid
         .padding([.leading, .trailing], gproxy.size.width * scaleMargin / 2)
         .onAppear {
             sliderDragging = true
-            if currentIndex == 0 {
-                sproxy.scrollTo(currentIndex, anchor: .leading)
+            if pageManager.currentIndex == 0 {
+                sproxy.scrollTo(pageManager.currentIndex, anchor: .leading)
             }
-            else if currentIndex == count - 1 {
-                sproxy.scrollTo(currentIndex, anchor: .trailing)
+            else if pageManager.currentIndex == count - 1 {
+                sproxy.scrollTo(pageManager.currentIndex, anchor: .trailing)
             }
             else {
-                sproxy.scrollTo(currentIndex, anchor: .center)
+                sproxy.scrollTo(pageManager.currentIndex, anchor: .center)
             }
             DispatchQueue.main.async {
                 sliderDragging = false
@@ -214,8 +249,8 @@ struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, Slid
                     start = end
                     start += horizontalSpacing
                 }
-                currentIndex = minIndex
-                draggingOffsetX = (sliderWidth - thumbSize.width) / CGFloat(maxValue) * CGFloat(currentIndex)
+                pageManager.currentIndex = minIndex
+                draggingOffsetX = (sliderWidth - thumbSize.width) / CGFloat(maxValue) * CGFloat(pageManager.currentIndex)
 //                offsetX = draggingOffsetX
 //                GZLogFunc("currentIndex :\(currentIndex)")
             }
