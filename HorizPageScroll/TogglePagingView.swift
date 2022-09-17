@@ -19,8 +19,6 @@ import Combine
         page = Page.withIndex(pageIndex)
         page.objectWillChange.sink {[weak self] in
             guard let welf = self else { return }
-            GZLogFunc(welf.page.index)
-            GZLogFunc(welf.currentIndex)
             if welf.page.index != welf.currentIndex {
                 welf.currentIndex = welf.page.index
             }
