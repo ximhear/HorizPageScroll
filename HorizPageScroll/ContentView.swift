@@ -9,6 +9,12 @@ import SwiftUI
 
 struct ContentView: View {
     @State var compactMode: Bool = false
+    @State var pageIndex: Int = 0 {
+        willSet {
+           GZLogFunc(newValue)
+            GZLogFunc()
+        }
+    }
     var body: some View {
         VStack {
             HStack {
@@ -20,25 +26,30 @@ struct ContentView: View {
                 compactMode.toggle()
             }
             VStack {
-                TTT()
-//                TogglePagingView(count: 1200,
-//                                 thumbSize: .init(width: 80, height: 40),
-//                                 slideBarHeight: 20,
-//                                 spacing: 20,
-//                                 slideSidePadding: 16,
-//                                 compactMode: $compactMode
-//                ) { index, toggleMode in
-//                    content(index: index)
-//                } compactContent: { index in
-//                    content(index: index)
-//                }  thumbContent: {
-//                    RoundedRectangle(cornerRadius: 10)
-//                        .fill(Color.red)
-//                        .opacity(0.5)
-//                } slideBarContent: {
-//                    RoundedRectangle(cornerRadius: 5)
-//                        .fill(Color.accentColor)
-//                }
+                TogglePagingView(
+                    page: $pageIndex,
+                    count: 2200,
+                                 thumbSize: .init(width: 80, height: 40),
+                                 slideBarHeight: 20,
+                                 spacing: 20,
+                                 slideSidePadding: 16,
+                                 compactMode: $compactMode,
+                    pageChanged: { index in
+                        GZLogFunc(index)
+                        pageIndex = index
+                    }
+                ) { index, toggleMode in
+                    content(index: index)
+                } compactContent: { index in
+                    content(index: index)
+                }  thumbContent: {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.red)
+                        .opacity(0.5)
+                } slideBarContent: {
+                    RoundedRectangle(cornerRadius: 5)
+                        .fill(Color.accentColor)
+                }
             }
             .padding()
             HStack {

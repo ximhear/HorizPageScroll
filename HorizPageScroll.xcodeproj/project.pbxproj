@@ -14,8 +14,9 @@
 		EC3C121628C72B4D00549588 /* TTT.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3C121528C72B4D00549588 /* TTT.swift */; };
 		EC3C121828C7B74600549588 /* GHorizontalSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3C121728C7B74600549588 /* GHorizontalSlider.swift */; };
 		EC3C121A28C7B77C00549588 /* GZLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3C121928C7B77C00549588 /* GZLog.swift */; };
+		EC57B4A728D7696D005129E4 /* GPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC57B4A628D7696D005129E4 /* GPageView.swift */; };
+		EC57B4A928D77183005129E4 /* GPageTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC57B4A828D77183005129E4 /* GPageTestView.swift */; };
 		EC8105EA28CA221100B07BFC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8105E928CA221100B07BFC /* ContentView.swift */; };
-		ECD113D028D613E800BB442F /* SwiftUIPager in Frameworks */ = {isa = PBXBuildFile; productRef = ECD113CF28D613E800BB442F /* SwiftUIPager */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,8 @@
 		EC3C121528C72B4D00549588 /* TTT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTT.swift; sourceTree = "<group>"; };
 		EC3C121728C7B74600549588 /* GHorizontalSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GHorizontalSlider.swift; sourceTree = "<group>"; };
 		EC3C121928C7B77C00549588 /* GZLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GZLog.swift; sourceTree = "<group>"; };
+		EC57B4A628D7696D005129E4 /* GPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPageView.swift; sourceTree = "<group>"; };
+		EC57B4A828D77183005129E4 /* GPageTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPageTestView.swift; sourceTree = "<group>"; };
 		EC8105E928CA221100B07BFC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -35,7 +38,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ECD113D028D613E800BB442F /* SwiftUIPager in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,6 +69,8 @@
 				EC3C121728C7B74600549588 /* GHorizontalSlider.swift */,
 				EC3C121928C7B77C00549588 /* GZLog.swift */,
 				EC3C121528C72B4D00549588 /* TTT.swift */,
+				EC57B4A628D7696D005129E4 /* GPageView.swift */,
+				EC57B4A828D77183005129E4 /* GPageTestView.swift */,
 				EC3C120B28C724E200549588 /* Assets.xcassets */,
 				EC3C120D28C724E200549588 /* Preview Content */,
 			);
@@ -98,7 +102,6 @@
 			);
 			name = HorizPageScroll;
 			packageProductDependencies = (
-				ECD113CF28D613E800BB442F /* SwiftUIPager */,
 			);
 			productName = HorizPageScroll;
 			productReference = EC3C120428C724E200549588 /* HorizPageScroll.app */;
@@ -129,7 +132,6 @@
 			);
 			mainGroup = EC3C11FB28C724E200549588;
 			packageReferences = (
-				ECD113CE28D613E800BB442F /* XCRemoteSwiftPackageReference "SwiftUIPager" */,
 			);
 			productRefGroup = EC3C120528C724E200549588 /* Products */;
 			projectDirPath = "";
@@ -157,11 +159,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC57B4A928D77183005129E4 /* GPageTestView.swift in Sources */,
 				EC3C120A28C724E200549588 /* TogglePagingView.swift in Sources */,
 				EC3C121628C72B4D00549588 /* TTT.swift in Sources */,
 				EC8105EA28CA221100B07BFC /* ContentView.swift in Sources */,
 				EC3C121828C7B74600549588 /* GHorizontalSlider.swift in Sources */,
 				EC3C120828C724E200549588 /* HorizPageScrollApp.swift in Sources */,
+				EC57B4A728D7696D005129E4 /* GPageView.swift in Sources */,
 				EC3C121A28C7B77C00549588 /* GZLog.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -363,25 +367,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		ECD113CE28D613E800BB442F /* XCRemoteSwiftPackageReference "SwiftUIPager" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/fermoya/SwiftUIPager.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		ECD113CF28D613E800BB442F /* SwiftUIPager */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = ECD113CE28D613E800BB442F /* XCRemoteSwiftPackageReference "SwiftUIPager" */;
-			productName = SwiftUIPager;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = EC3C11FC28C724E200549588 /* Project object */;
 }
