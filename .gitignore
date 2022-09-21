@@ -1,2 +1,9 @@
-HorizPageScroll.xcodeproj/project.xcworkspace/xcuserdata
-HorizPageScroll.xcodeproj/project.xcworkspace/xcshareddata
+.DS_Store
+/.build
+/Packages
+/*.xcodeproj
+xcuserdata/
+DerivedData/
+.swiftpm/config/registries.json
+.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
+.netrc

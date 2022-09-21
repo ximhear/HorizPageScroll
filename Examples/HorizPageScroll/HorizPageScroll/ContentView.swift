@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TogglePagingView
 
 struct ContentView: View {
     @State var compactMode: Bool = false

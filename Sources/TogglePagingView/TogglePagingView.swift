@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, SlideBarView: View>: View {
+public struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, SlideBarView: View>: View {
     @Binding var compactMode: Bool
     let count: Int
     @State var scale: CGFloat = 0.75
@@ -30,18 +30,18 @@ struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, Slid
     }
     let data: [Int]
     
-    typealias FullContentBlock = (Int, @escaping () -> Void) -> FullView
-    typealias CompactContentBlock = (Int) -> CompactView
-    typealias ThumbBlock = () -> ThumbView
-    typealias SlideBarBlock = () -> SlideBarView
+    public typealias FullContentBlock = (Int, @escaping () -> Void) -> FullView
+    public typealias CompactContentBlock = (Int) -> CompactView
+    public typealias ThumbBlock = () -> ThumbView
+    public typealias SlideBarBlock = () -> SlideBarView
     
     @ViewBuilder var fullContent: FullContentBlock
     @ViewBuilder var compactContent: CompactContentBlock
     @ViewBuilder var thumbContent: ThumbBlock
     @ViewBuilder var slideBarContent: SlideBarBlock
     
-    init(page: Binding<Int>,
-        count: Int,
+    public init(page: Binding<Int>,
+         count: Int,
          thumbSize: CGSize,
          slideBarHeight: CGFloat,
          spacing: CGFloat,
@@ -65,9 +65,9 @@ struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, Slid
         self.compactContent = compactContent
         self.thumbContent = thumbContent
         self.slideBarContent = slideBarContent
-}
+    }
     
-    var body: some View {
+    public var body: some View {
         VStack {
             if compactMode == false {
                 GeometryReader { proxy in
@@ -83,13 +83,13 @@ struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, Slid
                     GeometryReader { gproxy in
                         VStack(spacing: 0) {
                             scrollContainer(sproxy: sproxy, gproxy: gproxy)
-//                                .background()
-//                                .backgroundStyle(.cyan)
+                            //                                .background()
+                            //                                .backgroundStyle(.cyan)
                             horizontalSlider(width: gproxy.size.width - slideSidePadding * 2, sproxy: sproxy)
-                            .padding([.leading, .trailing], slideSidePadding)
-//                            .background()
-//                            .backgroundStyle(.yellow)
-                            .padding([.top], spacing)
+                                .padding([.leading, .trailing], slideSidePadding)
+                            //                            .background()
+                            //                            .backgroundStyle(.yellow)
+                                .padding([.top], spacing)
                         }
                         .frame(width: gproxy.size.width, height: gproxy.size.height)
                     }
@@ -139,24 +139,24 @@ struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, Slid
             LazyHStack(alignment: .top, spacing: horizontalSpacing) {
                 ForEach(0..<count, id: \.self) { index in
                     compactContent(index)
-                    .allowsHitTesting(false)
-                    .frame(width: gproxy.size.width,
-                           height: gproxy.size.height
-                    )
-                    .scaleEffect(scale)
-                    .frame(width: gproxy.size.width * scale,
-                           height: gproxy.size.height * scale
-                    )
-                    .background()
-                    .backgroundStyle(.green.opacity(0.2))
-                    .border(.gray.opacity(0.5))
-                    .onTapGesture {
-                        GZLogFunc()
-                        currentIndex = index
-                        toggleMode()
-                    }
-                    .padding([.leading], index == 0 ? gproxy.size.width * scaleMargin / 2 : 0)
-                    .padding([.trailing], index == count - 1 ? gproxy.size.width * scaleMargin / 2 : 0)
+                        .allowsHitTesting(false)
+                        .frame(width: gproxy.size.width,
+                               height: gproxy.size.height
+                        )
+                        .scaleEffect(scale)
+                        .frame(width: gproxy.size.width * scale,
+                               height: gproxy.size.height * scale
+                        )
+                        .background()
+                        .backgroundStyle(.green.opacity(0.2))
+                        .border(.gray.opacity(0.5))
+                        .onTapGesture {
+                            GZLogFunc()
+                            currentIndex = index
+                            toggleMode()
+                        }
+                        .padding([.leading], index == 0 ? gproxy.size.width * scaleMargin / 2 : 0)
+                        .padding([.trailing], index == count - 1 ? gproxy.size.width * scaleMargin / 2 : 0)
                 }
             }
             .background(content: {
@@ -173,11 +173,11 @@ struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, Slid
             height: gproxy.size.height * scale
         )
         .background()
-//        .backgroundStyle(.blue)
+        //        .backgroundStyle(.blue)
         .padding([.leading, .trailing], gproxy.size.width * scaleMargin / 2)
         .onAppear {
             sliderDragging = true
-            DispatchQueue.main.async {
+//            DispatchQueue.main.async {
                 let currentIndex = currentIndex
                 GZLogFunc(currentIndex)
                 if currentIndex == 0 {
@@ -193,7 +193,7 @@ struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, Slid
                     appeared = true
                     sliderDragging = false
                 }
-            }
+//            }
         }.onDisappear {
             appeared = false
         }
@@ -231,8 +231,8 @@ struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, Slid
                 }
                 currentIndex = minIndex
                 draggingOffsetX = (sliderWidth - thumbSize.width) / CGFloat(maxValue) * CGFloat(currentIndex)
-//                offsetX = draggingOffsetX
-//                GZLogFunc("currentIndex :\(currentIndex)")
+                //                offsetX = draggingOffsetX
+                //                GZLogFunc("currentIndex :\(currentIndex)")
             }
         }
         return Text("")
@@ -241,7 +241,7 @@ struct TogglePagingView<FullView: View, CompactView: View, ThumbView: View, Slid
 
 struct TogglePagingView_Previews: PreviewProvider {
     @State static var compactMode: Bool = false
-    @State static var pageIndex: Int = 10
+    @State static var pageIndex: Int = 1
     static var previews: some View {
         TogglePagingView(
             page: $pageIndex,

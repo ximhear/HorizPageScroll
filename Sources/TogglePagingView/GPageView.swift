@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct GPageView<ContentView: View>: View {
+public struct GPageView<ContentView: View>: View {
     
     @State var lower: Int
     @State var upper: Int
@@ -15,11 +15,11 @@ struct GPageView<ContentView: View>: View {
 
     @State var rotation: Double = 0
     
-    typealias ContentBlock = (Int) -> ContentView
+    public typealias ContentBlock = (Int) -> ContentView
     let contentBlock: ContentBlock
     let dataCount: Int
     
-    init(page: Binding<Int>, dataCount: Int, content: @escaping ContentBlock) {
+    public init(page: Binding<Int>, dataCount: Int, content: @escaping ContentBlock) {
         _current = page
         contentBlock = content
         self.dataCount = dataCount
@@ -71,7 +71,7 @@ struct GPageView<ContentView: View>: View {
         GZLogFunc(upper)
     }
 
-    var body: some View {
+    public var body: some View {
         GeometryReader { proxy in
             VStack {
                 GeometryReader { proxy in

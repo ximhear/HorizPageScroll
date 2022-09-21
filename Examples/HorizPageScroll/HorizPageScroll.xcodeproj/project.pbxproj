@@ -7,28 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EC396BC128DB41FC0087395F /* TogglePagingView in Frameworks */ = {isa = PBXBuildFile; productRef = EC396BC028DB41FC0087395F /* TogglePagingView */; };
 		EC3C120828C724E200549588 /* HorizPageScrollApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3C120728C724E200549588 /* HorizPageScrollApp.swift */; };
-		EC3C120A28C724E200549588 /* TogglePagingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3C120928C724E200549588 /* TogglePagingView.swift */; };
 		EC3C120C28C724E200549588 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EC3C120B28C724E200549588 /* Assets.xcassets */; };
 		EC3C120F28C724E200549588 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EC3C120E28C724E200549588 /* Preview Assets.xcassets */; };
 		EC3C121628C72B4D00549588 /* TTT.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3C121528C72B4D00549588 /* TTT.swift */; };
-		EC3C121828C7B74600549588 /* GHorizontalSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3C121728C7B74600549588 /* GHorizontalSlider.swift */; };
 		EC3C121A28C7B77C00549588 /* GZLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3C121928C7B77C00549588 /* GZLog.swift */; };
-		EC57B4A728D7696D005129E4 /* GPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC57B4A628D7696D005129E4 /* GPageView.swift */; };
 		EC57B4A928D77183005129E4 /* GPageTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC57B4A828D77183005129E4 /* GPageTestView.swift */; };
 		EC8105EA28CA221100B07BFC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8105E928CA221100B07BFC /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EC396BBD28DB40730087395F /* TogglePagingView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TogglePagingView; path = ../..; sourceTree = "<group>"; };
 		EC3C120428C724E200549588 /* HorizPageScroll.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HorizPageScroll.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC3C120728C724E200549588 /* HorizPageScrollApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizPageScrollApp.swift; sourceTree = "<group>"; };
-		EC3C120928C724E200549588 /* TogglePagingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TogglePagingView.swift; sourceTree = "<group>"; };
 		EC3C120B28C724E200549588 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EC3C120E28C724E200549588 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EC3C121528C72B4D00549588 /* TTT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTT.swift; sourceTree = "<group>"; };
-		EC3C121728C7B74600549588 /* GHorizontalSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GHorizontalSlider.swift; sourceTree = "<group>"; };
 		EC3C121928C7B77C00549588 /* GZLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GZLog.swift; sourceTree = "<group>"; };
-		EC57B4A628D7696D005129E4 /* GPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPageView.swift; sourceTree = "<group>"; };
 		EC57B4A828D77183005129E4 /* GPageTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPageTestView.swift; sourceTree = "<group>"; };
 		EC8105E928CA221100B07BFC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -38,17 +34,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC396BC128DB41FC0087395F /* TogglePagingView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EC396BBF28DB41FC0087395F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		EC3C11FB28C724E200549588 = {
 			isa = PBXGroup;
 			children = (
+				EC396BBD28DB40730087395F /* TogglePagingView */,
 				EC3C120628C724E200549588 /* HorizPageScroll */,
 				EC3C120528C724E200549588 /* Products */,
+				EC396BBF28DB41FC0087395F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -65,11 +71,8 @@
 			children = (
 				EC3C120728C724E200549588 /* HorizPageScrollApp.swift */,
 				EC8105E928CA221100B07BFC /* ContentView.swift */,
-				EC3C120928C724E200549588 /* TogglePagingView.swift */,
-				EC3C121728C7B74600549588 /* GHorizontalSlider.swift */,
 				EC3C121928C7B77C00549588 /* GZLog.swift */,
 				EC3C121528C72B4D00549588 /* TTT.swift */,
-				EC57B4A628D7696D005129E4 /* GPageView.swift */,
 				EC57B4A828D77183005129E4 /* GPageTestView.swift */,
 				EC3C120B28C724E200549588 /* Assets.xcassets */,
 				EC3C120D28C724E200549588 /* Preview Content */,
@@ -102,6 +105,7 @@
 			);
 			name = HorizPageScroll;
 			packageProductDependencies = (
+				EC396BC028DB41FC0087395F /* TogglePagingView */,
 			);
 			productName = HorizPageScroll;
 			productReference = EC3C120428C724E200549588 /* HorizPageScroll.app */;
@@ -160,12 +164,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				EC57B4A928D77183005129E4 /* GPageTestView.swift in Sources */,
-				EC3C120A28C724E200549588 /* TogglePagingView.swift in Sources */,
 				EC3C121628C72B4D00549588 /* TTT.swift in Sources */,
 				EC8105EA28CA221100B07BFC /* ContentView.swift in Sources */,
-				EC3C121828C7B74600549588 /* GHorizontalSlider.swift in Sources */,
 				EC3C120828C724E200549588 /* HorizPageScrollApp.swift in Sources */,
-				EC57B4A728D7696D005129E4 /* GPageView.swift in Sources */,
 				EC3C121A28C7B77C00549588 /* GZLog.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -367,6 +368,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EC396BC028DB41FC0087395F /* TogglePagingView */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TogglePagingView;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = EC3C11FC28C724E200549588 /* Project object */;
 }
