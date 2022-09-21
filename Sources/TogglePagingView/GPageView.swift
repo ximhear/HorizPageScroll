@@ -110,7 +110,7 @@ public struct GPageView<ContentView: View>: View {
         
     }
     
-    var minimumDistance: CGFloat = 15
+    var minimumDistance: CGFloat = 5
     @GestureState var isGestureFinished = true
     var swipeGesture: some Gesture {
         DragGesture(minimumDistance: minimumDistance, coordinateSpace: .global)
@@ -122,16 +122,31 @@ public struct GPageView<ContentView: View>: View {
             })
     }
     @State var offsetX: CGFloat = 0
+    @State var lastDraggingValue: DragGesture.Value?
+    @State var draggingVelocity: Double = 0
     func onDragChanged(with value: DragGesture.Value) {
-       
+        GZLogFunc()
+        
+        let currentX = value.location.x
+        let lastX = self.lastDraggingValue?.location.x ?? currentX
+        let offsetIncrement = currentX - lastX
+        GZLogFunc("offsetIncrement : \(offsetIncrement)")
+        
+        let timeIncrement = value.time.timeIntervalSince(self.lastDraggingValue?.time ?? value.time)
+        GZLogFunc("timeIncrement : \(timeIncrement)")
+        if timeIncrement != 0 {
+            self.draggingVelocity = Double(offsetIncrement) / timeIncrement
+        }
         offsetX = value.translation.width
+        self.lastDraggingValue = value
     }
     
     @State var pageWidth: CGFloat = 100
     func onDragGestureEnded() {
         withAnimation {
-            if abs(offsetX) >= pageWidth / 2 {
-                if offsetX < 0 {
+            GZLogFunc(draggingVelocity)
+            if abs(offsetX) >= pageWidth / 2 || abs(draggingVelocity) > 500 {
+                if offsetX < 0 || draggingVelocity < 0 {
                     if current < dataCount - 1 {
                         current += 1
                     }
@@ -144,6 +159,8 @@ public struct GPageView<ContentView: View>: View {
                 calcPageBounds()
             }
             offsetX = 0
+            lastDraggingValue = nil
+            draggingVelocity = 0
         }
     }
     
