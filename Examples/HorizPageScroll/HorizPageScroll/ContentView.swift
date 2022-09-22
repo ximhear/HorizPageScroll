@@ -10,12 +10,8 @@ import TogglePagingView
 
 struct ContentView: View {
     @State var compactMode: Bool = false
-    @State var pageIndex: Int = 0 {
-        willSet {
-           GZLogFunc(newValue)
-            GZLogFunc()
-        }
-    }
+    @State var pageIndex: Int = 0
+    let colors: [Color] = [.yellow, .green, .cyan, .orange]
     var body: some View {
         VStack {
             HStack {
@@ -29,7 +25,7 @@ struct ContentView: View {
             VStack {
                 TogglePagingView(
                     page: $pageIndex,
-                    count: 2200,
+                    count: 10,
                                  thumbSize: .init(width: 80, height: 40),
                                  slideBarHeight: 20,
                                  spacing: 20,
@@ -104,7 +100,7 @@ struct ContentView: View {
             }
             .frame(width: proxy.size.width, height: proxy.size.height)
             .background()
-            .backgroundStyle(.yellow)
+            .backgroundStyle(colors[index % 4])
         }
     }
 }

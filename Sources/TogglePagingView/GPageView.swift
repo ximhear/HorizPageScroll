@@ -25,21 +25,13 @@ public struct GPageView<ContentView: View>: View {
         self.dataCount = dataCount
         
         if dataCount > 0 {
-            if _current.wrappedValue < 0 {
-                _current.wrappedValue = 0
-            }
-            else if _current.wrappedValue >= dataCount {
-                _current.wrappedValue = dataCount - 1
-            }
-            GZLogFunc(_current.wrappedValue)
-
             _lower = State<Int>.init(wrappedValue: _current.wrappedValue - 1)
             if _lower.wrappedValue < 0 {
-                _lower.wrappedValue = 0
+                _lower = State<Int>.init(wrappedValue: 0)
             }
             _upper = State<Int>.init(wrappedValue: _current.wrappedValue + 1)
             if _upper.wrappedValue >= dataCount {
-                _upper.wrappedValue = dataCount - 1
+                _upper = State<Int>.init(wrappedValue: dataCount - 1)
             }
         }
         else {
@@ -94,10 +86,9 @@ public struct GPageView<ContentView: View>: View {
         }
         return HStack(spacing: 0) {
             ForEach(lower...upper, id: \.self) { index in
-                
                 contentBlock(index)
                     .frame(width: proxy.size.width)
-                    .rotation3DEffect(Angle(degrees: (Double(index - current) + Double(offsetX / proxy.size.width)) * -30 + rotation), axis: (0, 1,  0))
+//                    .rotation3DEffect(Angle(degrees: (Double(index - current) + Double(offsetX / proxy.size.width)) * -30 + rotation), axis: (0, 1,  0))
             }
             .offset(.init(width: CGFloat(lower - current) * proxy.size.width + offsetX, height: 0))
         }
