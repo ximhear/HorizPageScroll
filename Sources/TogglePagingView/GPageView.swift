@@ -66,15 +66,13 @@ public struct GPageView<ContentView: View>: View {
     public var body: some View {
         GeometryReader { proxy in
             VStack {
-                GeometryReader { proxy in
-                    if dataCount == 0 {
-                        Rectangle()
-                            .fill(.clear)
-                            .frame(width: proxy.size.width)
-                    }
-                    else {
-                        content(proxy: proxy)
-                    }
+                if dataCount == 0 {
+                    Rectangle()
+                        .fill(.clear)
+                        .frame(width: proxy.size.width)
+                }
+                else {
+                    content(proxy: proxy)
                 }
             }
         }
