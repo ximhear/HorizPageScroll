@@ -143,7 +143,16 @@ public struct GPageView<ContentView: View>: View {
     
     @State var pageWidth: CGFloat = 100
     func onDragGestureEnded() {
-        withAnimation {
+        
+        var animation: Animation
+        if abs(draggingVelocity) > 500 {
+            animation = Animation.timingCurve(0.2, 1, 0.9, 1, duration: 0.2)
+        }
+        else {
+            animation = Animation.easeOut(duration: 0.35)
+            
+        }
+        withAnimation(animation) {
             GZLogFunc(draggingVelocity)
             if abs(offsetX) >= pageWidth / 2 || abs(draggingVelocity) > 500 {
                 if offsetX < 0 || draggingVelocity < 0 {
