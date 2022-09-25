@@ -114,15 +114,15 @@ public struct GPageView<ContentView: View>: View {
     @State var lastDraggingValue: DragGesture.Value?
     @State var draggingVelocity: Double = 0
     func onDragChanged(with value: DragGesture.Value) {
-        GZLogFunc()
+//        GZLogFunc()
         
         let currentX = value.location.x
         let lastX = self.lastDraggingValue?.location.x ?? currentX
         let offsetIncrement = currentX - lastX
-        GZLogFunc("offsetIncrement : \(offsetIncrement)")
+//        GZLogFunc("offsetIncrement : \(offsetIncrement)")
         
         let timeIncrement = value.time.timeIntervalSince(self.lastDraggingValue?.time ?? value.time)
-        GZLogFunc("timeIncrement : \(timeIncrement)")
+//        GZLogFunc("timeIncrement : \(timeIncrement)")
         if timeIncrement != 0 {
             self.draggingVelocity = Double(offsetIncrement) / timeIncrement
         }
@@ -142,7 +142,7 @@ public struct GPageView<ContentView: View>: View {
             
         }
         withAnimation(animation) {
-            GZLogFunc(draggingVelocity)
+//            GZLogFunc(draggingVelocity)
             if abs(offsetX) >= pageWidth / 2 || abs(draggingVelocity) > 500 {
                 if offsetX < 0 || draggingVelocity < 0 {
                     if current < dataCount - 1 {

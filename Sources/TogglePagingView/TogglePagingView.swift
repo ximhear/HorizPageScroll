@@ -217,7 +217,11 @@ public struct TogglePagingView<FullView: View, CompactView: View, ThumbView: Vie
                 var start: CGFloat = 0
                 var minIndex: Int = 0
                 var minDistance: CGFloat = 100000
+                GZLogFunc("width : \(readerProxy.size.width)")
+                GZLogFunc("scale : \(scale)")
+                GZLogFunc(readerProxy.size.width * scale)
                 GZLogFunc(pageWidth)
+                GZLogFunc(horizontalSpacing)
                 GZLogFunc(count)
                 for x in 0..<count {
                     let end = start + pageWidth
