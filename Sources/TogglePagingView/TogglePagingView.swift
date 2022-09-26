@@ -148,7 +148,7 @@ public struct TogglePagingView<FullView: View, CompactView: View, ThumbView: Vie
                                height: gproxy.size.height * scale
                         )
                         .background()
-                        .backgroundStyle(.green.opacity(0.2))
+                        .backgroundStyle(.green.opacity(0.1))
                         .border(.gray.opacity(0.5))
                         .onTapGesture {
                             GZLogFunc()
